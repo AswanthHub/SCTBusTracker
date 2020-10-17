@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -51,7 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 mMap.clear() //to remove prev marker after loc change
 
-                val locationlogging = dataSnapshot.child("Current Location").getValue(LocationLogging::class.java)
+                val locationlogging = dataSnapshot.child("BusA").getValue(LocationLogging::class.java)
                 var driverLat=locationlogging?.Latitude
                 var driverLong=locationlogging?.Longitude
                 //Log.d("Latitude of driver", driverLat.toString())
@@ -60,12 +61,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (driverLat !=null  && driverLong != null) {
                     val driverLoc = LatLng(driverLat, driverLong)
 
-                    val markerOptions = MarkerOptions().position(driverLoc).title("Driver")
+                    val markerOptions = MarkerOptions().position(driverLoc).title("Bus").icon(
+                       BitmapDescriptorFactory.fromResource(R.drawable.markerm)) //markerm.png is the bus icon
                     mMap.addMarker(markerOptions)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(driverLoc, 15f))
                     //Zoom level - 1: World, 5: Landmass/continent, 10: City, 15: Streets and 20: Buildings
 
-                    Toast.makeText(applicationContext, "Locations accessed from the database", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(applicationContext, "Locations accessed from the database", Toast.LENGTH_LONG).show()
 
 
                 }
@@ -75,6 +77,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        //adding point for college
+
+        //val college = LatLng(8.470814, 76.979630)
+        //mMap.addMarker(MarkerOptions().position(college).title("SCT"))
+
+        Toast.makeText(applicationContext, "Safe travel!", Toast.LENGTH_LONG).show()
 
 
 
